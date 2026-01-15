@@ -1,0 +1,57 @@
+'''Desenvolva um programa em Python que permita ao
+utilizador calcular o seu Índice de Massa Corporal
+(IMC). O programa deve solicitar ao utilizador a sua
+altura e o seu peso. De seguida, deve calcular o IMC e o
+programa deve exibir uma mensagem com base no valor do
+IMC calculado.
+● IMC abaixo de 18,5: Abaixo do peso
+● IMC entre 18,5 e 24,99: Peso normal
+● IMC entre 25,0 e 29,99: Sobrepeso
+● IMC entre 30,0 e 34,99: Obesidade grau 1
+● IMC entre 35,0 e 39,99: Obesidade grau 2
+● IMC acima de 40,0: Obesidade grau 3 (obesidade mórbida)'''
+
+
+import time
+
+from time import sleep
+
+
+print('---Calcule o seu IMC - Índice de Massa Corporal---')
+
+#Pegar os dados necessários para o cálculo
+altura = float(input('Me diga a sua altura em metros:'))
+peso = float(input('Agora me dê o seu peso em kg:'))
+
+                                                  # Converter de cm para metros, quando necessário
+if altura > 3:
+    altura = altura / 100
+
+print('A Calcular...')
+sleep(2)
+
+if altura <= 0 or peso <= 0:
+    print('Selecione uma medida válida')
+
+else:                                              #Esta já é a aplicação do calculo aos parâmetros do IMC
+    calculo_da_altura = altura * altura
+    calculo_do_imc = peso / calculo_da_altura
+
+    print('O seu valor de IMC é:', calculo_do_imc)
+
+    if calculo_do_imc < 18.5:
+        print('Abaixo do peso')
+    elif (calculo_do_imc >= 18.5 and calculo_do_imc <= 24.99):
+        print('Peso Normal')
+    elif calculo_do_imc >= 25.0 and calculo_do_imc <= 29.99:
+        print('Sobrepeso')
+    elif (calculo_do_imc >= 30.0 and calculo_do_imc <= 34.99):
+        print('Obesidade grau 1')
+    elif (calculo_do_imc >= 35.0 and calculo_do_imc <= 39.99):
+        print('Obesidade grau 2')
+    elif (calculo_do_imc >= 40.0):
+        print('Obesidade grau 3')
+    else:
+        print('Insira números corretos')
+
+O programa esta a correr bem. Experimente e compartilhe bugs encontrados para aperfeiçoamento contínuo.
