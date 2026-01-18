@@ -1,0 +1,42 @@
+'''Faça um programa que leia uma frase
+qualquer e diga se é um palíndromo,
+desconsiderando os espaços.
+
+    Ex: Anotaram a data da maratona'''
+                                                     # Para quem não sabe, um palíndromo é quando palavra, frase, número ou sequência de elementos que se lê da mesma forma de trás para frente e de frente para trás, 
+                                                        mantendo o mesmo sentido ou forma, desconsiderando espaços, pontuação e acentos.
+
+print('Vamos descobrir se é políndromo')
+
+                                                          # Deixar a frase limpa para não haver erros, pois assim garante maior uniformidade
+frase = input('Insira a sua frase: ')
+frase_um = frase                     #Deixar no final com a frase original
+frase = frase.lower()
+frase = frase.replace(" ", "")
+frase = frase.replace('-', '')
+frase = frase.replace('.', '')
+frase = frase.replace(',', '')
+frase = frase.replace('!', '')
+frase = frase.replace('?', '')
+
+frase = frase.replace('á','a').replace('â','a').replace('à','a').replace('ã','a')
+frase = frase.replace('é','e').replace('ê','e')
+frase = frase.replace('í','i')
+frase = frase.replace('ó','o').replace('ô','o').replace('õ','o')
+frase = frase.replace('ú','u')
+frase = frase.replace('ç','c')
+
+
+inverso = ''
+                                                # Aqui será invertida a frase para ser possível averiguar o palíndromo
+for c in range(len(frase) -1, -1, -1):          # Em ciclo, inserir para considerar o tamanho da frase para se inverter a frase por completa (assim, qualquer frase inserida será lida até o final e invertida por completo).
+    print(frase[c], end='')                     
+    inverso += frase[c]                         # Selecionar o inverso que será igual o inverso '' + frase[c]
+
+
+print(f'\n{frase}')
+                                              # Averiguar se a frase e o inverso são iguais e se confirmam como palíndromo, ou não.
+if frase == inverso:
+    print(f'A frase "{frase_um}" é um palíndromo!')
+else:
+    print('Não é um palíndromo!')
