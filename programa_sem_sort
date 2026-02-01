@@ -1,0 +1,33 @@
+'''Crie um programa onde o utilizador
+insira 5 números dentro de uma lista.
+Os valores devem ser registados já na
+posição correta [ordem crescente] e no
+final mostre a lista ordenada.
+
+Não utilizar o sort()'''
+
+
+numeros = []
+
+for c in range(5):                    #Ciclo até 5
+    num = int(input('Digite um número: '))
+
+    if not numeros:                # Se for o primeiro do ciclo - posição 1
+        numeros.append(num)
+        posicao = 1
+
+    elif num > numeros[-1]:        # Se o número for maior que os já constantes na lista, vá para o final da fila
+        numeros.append(num)
+        posicao = len(numeros)     # Para dar a posição com base na quantidade de números já presentes na lista
+
+    else:                          # Enquanto a posição for o menor da lista, coloque-o na frente
+        posicao = 0
+        while posicao < len(numeros):
+            if num <= numeros[posicao]:
+                numeros.insert(posicao, num)
+                posicao += 1  # ajusta para posição humana
+                break
+            posicao += 1
+
+    print(f'O número {num} entrou na {posicao}ª posição')
+    print(f'Lista atual: {numeros}')
