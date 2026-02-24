@@ -1,0 +1,149 @@
+# Log Analyzer - Python
+
+Script desenvolvido para:
+- Analisar logs por módulos específicos
+- Gerar estatísticas
+- Isolar FATAL ERROR em ficheiro separado
+- Produzir relatório com assinatura padrão
+
+Tecnologias utilizadas:
+- Python 3
+- Pathlib
+- Manipulação de ficheiros
+- Controle condicional
+- Estruturação de relatório
+
+Objetivo:
+Demonstrar capacidade de análise de logs, organização de código e geração de relatórios estruturados."""
+
+
+
+Log Analyzer – Separação e Estatísticas de Logs
+
+Descrição:
+Este script lê um ficheiro de logs (synthetic_error.log),
+analisa os módulos específicos indicados e gera:
+
+1) Um ficheiro com estatísticas gerais:
+   - Quantidade de ocorrências por módulo
+   - Total de linhas analisadas
+   - Quantidade de FATAL ERROR
+
+2) Caso existam FATAL ERROR, gera um ficheiro separado
+   contendo apenas esses logs.
+
+Autor: Pedro Augusto Paiva
+"""
+
+from pathlib import Path
+from datetime import datetime
+
+
+# ==========================
+# CONFIGURAÇÃO DE CAMINHOS
+# ==========================
+
+FILENAME = "synthetic_error.log"
+OUTPUT = "ficheiros_erros_resposta.txt"
+OUTPUT_FATAL = "ficheiro_fatal_error.txt"
+
+CAMINHO = Path(FILENAME)
+SAIDA = Path(OUTPUT)
+SAIDA_FATAL = Path(OUTPUT_FATAL)
+
+
+# ==========================
+# METADADOS DO RELATÓRIO
+# ==========================
+
+nome = "Pedro Augusto Paiva"
+data = datetime.now()
+
+
+# ==========================
+# VARIÁVEIS DE CONTAGEM
+# ==========================
+
+ssl_warn = 0
+core_warn = 0
+mpm_winnt_warn = 0
+mpm_winnt_notice = 0
+mpm_winnt_crit = 0
+core_notice = 0
+total_linhas = 0
+fatal_error = 0
+
+log_fatal = []
+
+
+# ==========================
+# LEITURA E ANÁLISE DO LOG
+# ==========================
+
+with CAMINHO.open(mode="r", encoding="utf-8", errors="ignore") as file:
+    for linha in file:
+        total_linhas += 1
+
+        # Contagem por módulo
+        if "ssl:warn" in linha:
+            ssl_warn += 1
+
+        if "core:warn" in linha:
+            core_warn += 1
+
+        if "mpm_winnt:warn" in linha:
+            mpm_winnt_warn += 1
+
+        if "mpm_winnt:notice" in linha:
+            mpm_winnt_notice += 1
+
+        if "mpm_winnt:crit" in linha:
+            mpm_winnt_crit += 1
+
+        if "core:notice" in linha:
+            core_notice += 1
+
+        # Identificação de FATAL ERROR
+        if "FATAL ERROR" in linha:
+            fatal_error += 1
+            log_fatal.append(linha)
+
+
+# ==========================
+# GERAÇÃO DO RELATÓRIO GERAL
+# ==========================
+
+with SAIDA.open(mode="w", encoding="utf-8") as f:
+    f.write("--- ANÁLISE GERAL ---\n")
+    f.write(f"NOME: {nome}\n")
+    f.write(f"DATA: {data}\n")
+    f.write(f"QTD. Logs: {total_linhas}\n")
+    f.write("----- INICIO DOS RESULTADOS -----\n")
+
+    f.write(f"ssl:warn -> {ssl_warn} ocorrências\n")
+    f.write(f"core:warn -> {core_warn} ocorrências\n")
+    f.write(f"mpm_winnt:warn -> {mpm_winnt_warn} ocorrências\n")
+    f.write(f"mpm_winnt:notice -> {mpm_winnt_notice} ocorrências\n")
+    f.write(f"mpm_winnt:crit -> {mpm_winnt_crit} ocorrências\n")
+    f.write(f"core:notice -> {core_notice} ocorrências\n")
+    f.write(f"FATAL ERROR -> {fatal_error} ocorrências\n")
+
+    f.write("----- FIM DOS RESULTADOS -----\n")
+
+
+# ==========================
+# GERAÇÃO DO FICHEIRO DE FATAL ERROR (SE EXISTIR)
+# ==========================
+
+if fatal_error > 0:
+    with SAIDA_FATAL.open(mode="w", encoding="utf-8") as f:
+        f.write("--- FATAL ERROR ---\n")
+        f.write(f"NOME: {nome}\n")
+        f.write(f"DATA: {data}\n")
+        f.write(f"QTD. Logs: {fatal_error}\n")
+        f.write("----- INICIO DOS RESULTADOS -----\n")
+
+        for log in log_fatal:
+            f.write(log)
+
+        f.write("----- FIM DOS RESULTADOS -----\n")
